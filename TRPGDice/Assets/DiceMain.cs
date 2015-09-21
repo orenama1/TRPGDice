@@ -15,39 +15,48 @@ public class DiceMain : MonoBehaviour {
     [SerializeField]
     Button _Action;
     int temp;
+    int num, count;
+    bool _Click=false;
     System.Random _Random = new System.Random();
+
     // Use this for initialization
     void Start () {
-        //Observable.CombineLatest(_Count.OnValueChangeAsObservable(),
-        //    _Num.OnValueChangeAsObservable())
-        //    .Select(x=>x.Select(y=>int.Parse(y)))
-        //    .Select(x=>RandData(x.First(), x.ElementAt(1)))
-        //    .SubscribeToText(_Result);
+
             
         //0以外の数値のみ通す
-        var count = _Count.OnValueChangeAsObservable()
+        _Count.OnValueChangeAsObservable()
             .Where(x=>!string.IsNullOrEmpty(x)&&int.TryParse(x, out temp))
             .Select(x => int.Parse(x))
-            .Where(x=>x!=0);
+            .Where(x=>x!=0)
+            .Subscribe(x=>this.count=x);
+
 
         //0以外の数値のみ通す
-        var num = _Num.OnValueChangeAsObservable()
+        _Num.OnValueChangeAsObservable()
             .Where(x => !string.IsNullOrEmpty(x) && int.TryParse(x, out temp))
             .Select(x => int.Parse(x))
-            .Where(x => x != 0);
+            .Where(x => x != 0)
+            .Subscribe(x=>this.num=x);
 
-        //片方でも変化したら計算
-        var anser = num.CombineLatest(count, (n, c) =>
-          {
-              return RandData(c, n);
-          });
-        //ダイス結果の描画
-        anser.SubscribeToText(_Result);
+        _Count.OnValueChangeAsObservable()
+            .Select(x => "")
+            .SubscribeToText(_Result);
+        _Num.OnValueChangeAsObservable()
+            .Select(x=>"")
+            .SubscribeToText(_Result);
 
-        //クリックしたらダイス結果の再計算と描画
+        //計算
         _Action.OnClickAsObservable()
-            .Subscribe(_ => anser.SubscribeToText(_Result));
+            .Select(_=> RandData(this.count, this.num))
+            .Do(x=> {
+                _Count.text = count.ToString();
+                _Num.text = num.ToString();
+            })
+            .SubscribeToText(_Result);
+        
     }
+
+
     /// <summary>
     /// countの回数num面ダイスを振る
     /// 表示形式は"ダイスの合計(1回ごとのダイスの結果)"
