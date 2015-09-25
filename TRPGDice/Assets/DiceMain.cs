@@ -21,7 +21,9 @@ public class DiceMain : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-
+        this.UpdateAsObservable()
+            .Where(_ => Input.GetKey(KeyCode.Escape))
+            .Subscribe(_ => Application.Quit());
             
         //0以外の数値のみ通す
         _Count.OnValueChangeAsObservable()
@@ -47,7 +49,7 @@ public class DiceMain : MonoBehaviour {
 
         //計算
         _Action.OnClickAsObservable()
-            .Select(_=> RandData(this.count, this.num))
+            .Select(_=> RandData(this.count, this.num+1))
             .Do(x=> {
                 _Count.text = count.ToString();
                 _Num.text = num.ToString();

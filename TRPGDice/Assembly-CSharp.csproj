@@ -46,6 +46,10 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\DiceMain.cs" />
+     <Compile Include="Assets\TRPGDice\Script\ButtonPush.cs" />
+     <Compile Include="Assets\TRPGDice\Script\ComputeDice.cs" />
+     <Compile Include="Assets\TRPGDice\Script\InputText.cs" />
+     <Compile Include="Assets\TRPGDice\Script\ResultText.cs" />
      <Compile Include="Assets\UniRx\Examples\Sample01_ObservableWWW.cs" />
      <Compile Include="Assets\UniRx\Examples\Sample02_ObservableTriggers.cs" />
      <Compile Include="Assets\UniRx\Examples\Sample03_GameObjectAsObservable.cs" />

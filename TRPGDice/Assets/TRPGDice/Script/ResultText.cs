@@ -29,7 +29,7 @@ public class ResultText : MonoBehaviour {
 
         _Button.ReadOnlyButtonProperty
             .Where(x=>x)
-            .Select(_ => _Dice.RandData(count, num))
+            .Select(_ => _Dice.RandData(count, num+1))
             .SubscribeToText(_Result);
     }
 	
